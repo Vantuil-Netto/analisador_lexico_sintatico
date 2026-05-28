@@ -35,6 +35,10 @@ class LexerGol:
         linha_atual = 1
         inicio_linha = 0
         pilha_chaves = 0
+        primeira_palavra_chave = None
+        ultima_palavra_chave = None
+        primeira_linha = 1
+        ultima_linha = 1
 
         for match in self.re_compilada.finditer(codigo_fonte):
             tipo = match.lastgroup
@@ -84,6 +88,12 @@ class LexerGol:
             if tipo == 'PALAVRA':
                 if lexema in self.palavras_reservadas:
                     tipo = self.palavras_reservadas[lexema]
+                    # Rastreia primeira e última palavra-chave (palavras reservadas)
+                    if primeira_palavra_chave is None:
+                        primeira_palavra_chave = lexema
+                        primeira_linha = linha_atual
+                    ultima_palavra_chave = lexema
+                    ultima_linha = linha_atual
                 else:
                     # Se não for palavra chave, e não começou com @ ou !, é sintaxe inválida na Gol++
                     erros_encontrados.append(f"Linha: {linha_atual} - Coluna {coluna} - ERRO: Identificador inválido ou palavra desconhecida ({lexema}). Faltou o '@'?")
@@ -97,6 +107,19 @@ class LexerGol:
 
             # Saída do token formatada
             tokens_encontrados.append(f"Linha: {linha_atual:02d} - Coluna {coluna:02d} - Token:<{tipo}, {lexema}>")
+
+        # Verifica obrigatoriedade de apito_inicial e apito_final
+        if primeira_palavra_chave != 'apito_inicial':
+            if primeira_palavra_chave is None:
+                erros_encontrados.append("Linha: 01 - ERRO ESTRUTURAL: O código deve começar com 'apito_inicial'.")
+            else:
+                erros_encontrados.append(f"Linha: {primeira_linha:02d} - ERRO ESTRUTURAL: O código deve começar com 'apito_inicial', mas encontrou '{primeira_palavra_chave}'.")
+        
+        if ultima_palavra_chave != 'apito_final':
+            if ultima_palavra_chave is None:
+                erros_encontrados.append("ERRO ESTRUTURAL: O código deve terminar com 'apito_final'.")
+            else:
+                erros_encontrados.append(f"Linha: {ultima_linha:02d} - ERRO ESTRUTURAL: O código deve terminar com 'apito_final', mas encontrou '{ultima_palavra_chave}'.")
 
         # Verifica se alguma chave ficou aberta no final do arquivo
         if pilha_chaves > 0:

@@ -147,6 +147,11 @@ class LexerGol:
         self.pilha_chaves = 0
         self.lexer.lineno = 1
         
+        primeira_palavra_chave = None
+        ultima_palavra_chave = None
+        primeira_linha = 1
+        ultima_linha = 1
+        
         # Alimenta a biblioteca com o código fonte
         self.lexer.input(codigo_fonte)
         
@@ -158,12 +163,39 @@ class LexerGol:
             
             coluna = tok.lexpos - self.inicio_linha + 1
             
+            # Rastreia primeira e última palavra-chave (INICIO_JOGO e FIM_JOGO)
+            if tok.type == 'INICIO_JOGO':
+                if primeira_palavra_chave is None:
+                    primeira_palavra_chave = tok.value
+                    primeira_linha = tok.lineno
+                ultima_palavra_chave = tok.value
+                ultima_linha = tok.lineno
+            elif tok.type == 'FIM_JOGO':
+                if primeira_palavra_chave is None:
+                    primeira_palavra_chave = tok.value
+                    primeira_linha = tok.lineno
+                ultima_palavra_chave = tok.value
+                ultima_linha = tok.lineno
+            
             if tok.type == 'ENTRA_CAMPO':
                 self.pilha_chaves += 1
             elif tok.type == 'SAI_CAMPO':
                 self.pilha_chaves -= 1
                 
             self.tokens_encontrados.append(f"Linha: {tok.lineno:02d} - Coluna {coluna:02d} - Token:<{tok.type}, {tok.value}>")
+            
+        # Verifica obrigatoriedade de apito_inicial e apito_final
+        if primeira_palavra_chave != 'apito_inicial':
+            if primeira_palavra_chave is None:
+                self.erros_encontrados.append("Linha: 01 - ERRO ESTRUTURAL: O código deve começar com 'apito_inicial'.")
+            else:
+                self.erros_encontrados.append(f"Linha: {primeira_linha:02d} - ERRO ESTRUTURAL: O código deve começar com 'apito_inicial', mas encontrou '{primeira_palavra_chave}'.")
+        
+        if ultima_palavra_chave != 'apito_final':
+            if ultima_palavra_chave is None:
+                self.erros_encontrados.append("ERRO ESTRUTURAL: O código deve terminar com 'apito_final'.")
+            else:
+                self.erros_encontrados.append(f"Linha: {ultima_linha:02d} - ERRO ESTRUTURAL: O código deve terminar com 'apito_final', mas encontrou '{ultima_palavra_chave}'.")
             
         # Verificações estruturais de fim de arquivo
         if self.pilha_chaves > 0:
