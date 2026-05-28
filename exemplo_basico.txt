@@ -1,0 +1,11 @@
+apito_inicial
+
+@jogador1 << 10
+@jogador2 << 20
+
+se_ataque
+    narrar "Ataque em andamento"
+    @jogador1 << @jogador1 + 5
+defesa
+
+apito_final
