@@ -66,7 +66,6 @@ analisador_lexico/
 │
 ├── docs/                      # Documentações Técnicas e Roteiros
 │   ├── DIFERENCA_MANUAL_VS_AUTOMATICO.md  # Comparativo técnico detalhado
-│   └── ROTEIRO_VIDEO_RAPIDO.md            # Guia/Roteiro para gravação de apresentação
 │
 ├── exemplo_basico.txt         # Arquivo com código simples em Gol++ para teste
 ├── run_manual.bat             # Atalho Windows para rodar a versão manual
