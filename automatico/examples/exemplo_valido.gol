@@ -1,0 +1,21 @@
+apito_inicial.
+~inteiro @gols_time.
+@gols_time << 0.
+~texto @mensagem.
+@mensagem << "Gol++".
+narrar(@mensagem).
+se_ataque (@gols_time < 10) {
+    @gols_time << @gols_time + 1.
+    narrar("Atacando!").
+}
+contra_ataque (@gols_time >= 10) {
+    narrar("Contra-ataque!").
+}
+defesa {
+    narrar("Defendendo!").
+}
+enquanto_bola_rolar (@gols_time < 5) {
+    @gols_time << @gols_time + 1.
+}
+!meu_gol().
+apito_final.

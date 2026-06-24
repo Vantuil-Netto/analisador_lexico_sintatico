@@ -1,0 +1,15 @@
+apito_inicial.
+~inteiro @gols_brasil.
+~inteiro @gols_escocia.
+@gols_brasil << 3.
+@gols_escocia << 0.
+
+se_ataque(@gols_brasil > @gols_escocia){
+    narrar("Vitoria do Brasil").
+} contra_ataque(@gols_brasil < @gols_escocia){
+    narrar("Vitoria da Escocia").
+} defesa {
+    narrar("Empate").
+}
+
+apito_final.

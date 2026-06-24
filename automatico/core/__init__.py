@@ -1,1 +1,1 @@
-# Core - Lógica do analisador léxico com PLY
+# Core - Lógica do analisador léxico (PLY) e sintático (Recursive Descent)

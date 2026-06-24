@@ -1,0 +1,7 @@
+apito_inicial.
+~inteiro @gols_time
+@gols_time << @gols_time + 1.
+defesa {
+    narrar("Defendendo!").
+}
+apito_final.
