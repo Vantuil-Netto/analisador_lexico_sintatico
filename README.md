@@ -1,4 +1,4 @@
-# Gol++ Compiler - Analisador Léxico e Sintatico
+# Gol++ Compiler - Analisador Léxico e Sintatico - Vantuil Netto, Lucio Garcia, Fabio Valeriano e Miguel Custodio
 
 Este repositorio contem a implementacao de duas abordagens de analisadores para a linguagem Gol++, uma DSL (Domain-Specific Language) inspirada no futebol:
 
